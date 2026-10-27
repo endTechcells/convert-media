@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	formats := []string{"mp4", "m4a", "mp3", "wav", "mkv", "webm", "avi", "mov"}
+	formats := []string{"mp4", "mp3", "wav", "mkv", "webm", "avi", "mov"}
 	for i, f := range formats {
 		fmt.Printf("%d: %s\n", i+1, f)
 	}
