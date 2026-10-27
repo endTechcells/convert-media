@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strings"
 )
 
 func main() {
@@ -15,16 +16,18 @@ func main() {
 	in := bufio.NewReader(os.Stdin)
 	fmt.Print("Archivo de entrada: ")
 	file, _ := in.ReadString('\n')
+	file = strings.TrimSpace(file)
 	fmt.Print("Formato destino (número): ")
 	var n int
 	fmt.Scan(&n)
 	if n < 1 || n > len(formats) {
+		fmt.Println("Formato inválido")
 		return
 	}
-	out := file[:len(file)-1] + "." + formats[n-1]
-	cmd := exec.Command("ffmpeg", "-i", file[:len(file)-1], out)
+	out := strings.TrimSuffix(file, "."+strings.TrimPrefix(strings.ToLower(file[strings.LastIndex(file, "."):]), ".")) + "." + formats[n-1]
+	cmd := exec.Command("ffmpeg", "-i", file, out)
 	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
 	if err := cmd.Run(); err != nil {
-		fmt.Println(err)
+		fmt.Println("Error:", err)
 	}
 }
